@@ -1,3 +1,4 @@
 .idea/
 engs/uwsgi.pid
+engs/uwsgi.ini
 engs/files/
