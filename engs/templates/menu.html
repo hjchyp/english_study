@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block body %}
+  <h1>Select what you want.</h1>
+  <p>
+  <a href="{% url 'recite:learning' %}"><button type="button" class="btn btn-primary btn-lg">Learning</button></a>
+  </p>
+
+  <p>
+    <a href="{% url 'recite:reviewing' %}"><button type="button" class="btn btn-primary btn-lg">Reviewing</button></a>
+  </p>
+
+  <p>
+  <a href="{% url 'recite:learning' %}"><button type="button" class="btn btn-primary btn-lg" disabled>Testing</button></a>
+  </p>
+
+{% endblock body %}

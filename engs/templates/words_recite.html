@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{%block top_script%}
+<style type="text/css">
+  .center_{
+    font-size:40px;
+    width:30%;
+    margin:15px 40px 70px 35%;
+  }
+</style>
+{%endblock top_script%}
+{% block body %}
+
+  {% for line in eng_words%}
+  <div class="bg-warning">
+    {%for word in line %}
+
+      {% if forloop.counter == 1%}
+        <h3 style="display:inline-block" class="word_num">{{word}}</h3>
+      {% elif forloop.counter == 2 %}
+        <h3 style="display:inline-block ">{{word}}</h3>
+        <br>
+      {% else %}
+        <h3 style="display:inline-block ">{{word}}</h3>
+      {% endif %}
+
+    {% endfor %}
+    <button class="btn btn-default is_remember_ok" style="margin:auto 15px auto 15px">不怂</button>
+    <button class="btn btn-default is_remember_remove">怂</button>
+    <span class="glyphicon glyphicon-ok" style="display:none;float:right;color:green;top:-14px;font-size:28px;right:24px"></span>
+    <span class="glyphicon glyphicon-remove" style="display:none;float:right;color:red;top:-14px;font-size:28px;right:24px"></span>
+  </div><br>
+  {% empty %}
+    <h3>没有新的词语了，请复习。</h3>
+  {% endfor %}
+  <button class="btn btn-default total_remember">全部记住</button>
+  {%if post_flag == 1%}
+    <form method="post" action="{% url 'recite:learning' %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="remember_list">remember list</label>
+        <input class="form-control" id="remember_list" name="remember_list" readonly>
+      </div>
+      <button type="submit" class="btn btn-primary center_">下一组</button>
+    </form>
+  {%else%}
+    <form method="get" action="{% url 'recite:learning' %}">
+      <button type="submit" class="btn btn-primary center_">下一组</button>
+    </form>
+  {%endif%}
+{% endblock body %}
+
+{% block bottom_script %}
+  <script type="text/javascript">
+    var remember_list = [];
+    var index = 0
+    $(function(){
+      $('.is_remember_ok').click(function(){
+        $(this).next().next().show();
+        $(this).next().next().next().hide();
+        if($.inArray($(this).siblings().eq(0).html(),remember_list) == '-1'){
+          remember_list.push($(this).siblings().eq(0).html());
+        }
+        $('#remember_list').val(remember_list.join(','));
+      });
+
+      $('.is_remember_remove').click(function(){
+        $(this).next().hide();
+        $(this).next().next().show();
+        if($.inArray($(this).siblings().eq(0).html(),remember_list) > -1){
+          index = remember_list.indexOf($(this).siblings().eq(0).html())
+          remember_list.splice(index,1)
+        }
+        $('#remember_list').val(remember_list.join(','));
+      });
+
+      $('.total_remember').click(function(){
+        for(var i = 0 ;i<$('.word_num').length;i++){
+          if($.inArray($('.word_num').eq(i).html(),remember_list) == -1){
+            remember_list.push($('.word_num').eq(i).html());
+          }
+          $('.glyphicon-remove').eq(i).hide()
+          $('.glyphicon-ok').eq(i).show()
+        }
+        $('#remember_list').val(remember_list.join(','));
+      });
+    });
+
+  </script>
+
+{% endblock bottom_script %}

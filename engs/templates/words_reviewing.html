@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{%block top_script%}
+<style type="text/css">
+  .answer{
+    font-size:23px;
+    background-color:#fffbe6;
+    border-bottom:1px solid black;
+    min-height:35px;
+  }
+  .bg-warning{
+    background-color:#f4f0d7;
+  }
+  h3{
+    padding-left:10px;
+    margin-bottom:20px;
+  }
+  h4{
+    padding-left:10px;
+    margin-bottom:20px;
+  }
+  div .answer{
+    padding-left:10px;
+  }
+  .center_{
+    font-size:40px;
+    width:30%;
+    margin:15px 40px 70px 35%;
+  }
+</style>
+{%endblock top_script%}
+
+{% block body %}
+
+  {% if answer_words|length　==　0 %}
+    <form method="post" action="{% url 'recite:reviewing' %}">
+      {% for line in eng_words%}
+      <div class="bg-warning">
+        {%for word in line %}
+          {% if forloop.counter == 1%}
+            <h3 style="display:inline-block" class="word_num">{{word}}</h3>
+          {% elif forloop.counter == 2 %}
+            <h3 style="display:inline-block ">{{word}}</h3>
+            <br>
+          {% elif forloop.counter == 3 %}
+            <textarea name="{{line.0}}ans" class="form-control answer" rows="2"></textarea>
+          {% endif %}
+        {% endfor %}
+      </div><br>
+      {% empty %}
+        <h3>没有新的词语了，请测验。</h3>
+      {% endfor %}
+        {% csrf_token %}
+      <button type="submit" class="btn btn-primary center_">提交</button>
+    </form>
+  {%else%}
+    <form method="get" action="{% url 'recite:reviewing' %}">
+      {% for line in answer_words%}
+      <div class="bg-warning">
+        {%for word in line %}
+          {% if forloop.counter == 1%}
+            <h3 style="display:inline-block" class="word_num">{{word}}</h3>
+          {% elif forloop.counter == 2 %}
+            <h3 style="display:inline-block ">{{word}}</h3>
+            <br>
+          {% elif forloop.counter == 3 %}
+            <div class="answer" id="{{forloop.parentloop.counter}}">{{word}}</div>
+          {% elif forloop.counter == 4 %}
+            <div class="answer" id="{{forloop.parentloop.counter}}_">{{word}}</div>
+          {% elif forloop.counter == 5 %}
+            {% if word == 0%}
+              <span class="glyphicon glyphicon-remove" style="float:right;color:red;top:-31px;font-size:28px;right:24px"></span>
+            {%else%}
+              <span class="glyphicon glyphicon-ok" style="float:right;color:green;top:-31px;font-size:28px;right:24px"></span>
+            {%endif%}
+          {% endif %}
+        {% endfor %}
+      </div><br>
+      {% empty %}
+        <h3>没有新的词语了，请测验。</h3>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary center_">下一组</button>
+    </form>
+
+  {%endif%}
+{% endblock body %}
+{%block bottom_script%}
+<script>
+var div_num = $('div .answer').length/2;
+window.onload=function(){
+  for(var loop_num=1;loop_num<div_num+1;loop_num++){
+    CompareTxt(document.getElementById(loop_num),document.getElementById(loop_num+'_'));
+  }
+}
+</script>
+{%endblock bottom_script%}
