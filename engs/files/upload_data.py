@@ -16,7 +16,7 @@ from recite.models import Unit,ItemBank
 
 def main(filename):
 
-    data = trans_excel_to_list(filename)[4:]
+    data = trans_excel_to_list(filename)[1:]
 
     for row in data:
         in_data = ItemBank.objects.create(item_ch=row[0],
