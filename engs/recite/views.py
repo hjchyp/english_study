@@ -12,6 +12,7 @@ from recite.models import ItemBank,User,Learned,Test
 import re
 import random
 from django.db.models import Max,Min
+import datetime
 
 
 
@@ -162,22 +163,40 @@ def random_sample(alist,num):
 
 '''
 复习逻辑：
-１．先找ｌｅａｒｎｅｄ表里面reviewed_times次数最小的，不超过三
+１．先找ｌｅａｒｎｅｄ表里面reviewed_times次数最小的(且上次复习时间超过８个小时的)，不超过三
 ２．都ｒｅｖｉｅｗ，３遍后后则找correct_times次数最小的，不超过三
 ３．最后找错误率最高的
 '''
 def review_logic(user_id):
 
 
+    now = datetime.datetime.now()
+
     minReviewed = Learned.objects.filter(user_id=user_id).aggregate(Min('reviewed_times'))
     # print(minReviewed)
+    # 如果没学词语直接返回空
     if minReviewed['reviewed_times__min'] == None:
         eng_words = []
         return eng_words
     minCorrect = Learned.objects.filter(user_id=user_id).aggregate(Min('correct_times'))
+    # 如果学了，那就先找复习次数最小的,根据复习的过的次数和时间进行筛选
     if minReviewed['reviewed_times__min'] < 3:
         # print(minReviewed)
-        min_sets = Learned.objects.filter(user_id=user_id).filter(reviewed_times=minReviewed['reviewed_times__min'])
+        if minReviewed['reviewed_times__min'] < 1:
+            min_sets = Learned.objects.filter(user_id=user_id).filter(
+                reviewed_times=minReviewed['reviewed_times__min'])
+        elif  minReviewed['reviewed_times__min'] == 1:
+            min_sets = Learned.objects.filter(user_id=user_id).filter(
+                reviewed_times=minReviewed['reviewed_times__min']).filter(
+                update_time__lt=now-datetime.timedelta(minutes=15))
+        elif minReviewed['reviewed_times__min'] == 2:
+            min_sets = Learned.objects.filter(user_id=user_id).filter(
+                reviewed_times=minReviewed['reviewed_times__min']).filter(
+                update_time__lt=now - datetime.timedelta(hours=3))
+        else:
+            min_sets = Learned.objects.filter(user_id=user_id).filter(
+                reviewed_times=minReviewed['reviewed_times__min']).filter(
+                update_time__lt=now - datetime.timedelta(hours=8))
         min_sets = [i.item_id for i in min_sets]
         min_sets = ItemBank.objects.filter(item_id__in=random_sample(min_sets, 10))
         eng_words = [re.split(r'\s|=', str(i)) for i in min_sets]  # [1,chinese,eng1]

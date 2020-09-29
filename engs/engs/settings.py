@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'uxm@t@5qpelrttg5pie)rgt8(jbv9zkiatuuxnkaw2_$me-@@8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -80,9 +80,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'english_study',
-        'USER': 'hjchyp',
-        'PASSWORD': '351327buzhidao',
-        'HOST': '49.233.137.85',
+        'USER': 'root',
+        'PASSWORD': 'tiger',
+        'HOST': '127.0.0.1',
         'PORT': 3306
     }
 }

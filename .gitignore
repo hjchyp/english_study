@@ -3,3 +3,4 @@ engs/uwsgi.pid
 engs/uwsgi.ini
 engs/files/
 engs/engs/settings.py
+engs/engs/settings_服务器.py
