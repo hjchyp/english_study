@@ -6,6 +6,8 @@ from recite.models import User,ItemBank,Unit,Learned,Test
 
 class ItemBankInfo(admin.ModelAdmin):
     list_display = ['item_en','item_ch']
+    list_filter = ['unit_id']
+    search_fields = ['item_en','item_ch','unit_item_id']
     model = ItemBank
 
 class UserInfo(admin.ModelAdmin):
