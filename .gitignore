@@ -3,4 +3,4 @@ engs/uwsgi.pid
 engs/uwsgi.ini
 engs/files/
 engs/engs/setting*
-ens/engs/__pycache__/
+*__pycache__*
