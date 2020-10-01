@@ -1,16 +1,17 @@
 {% extends 'base.html' %}
 {% block body %}
   <h1>Select what you want.</h1>
+  <div>开始学习新的单词(笔译常用词语翻译手册，卢敏)</div>
   <p>
   <a href="{% url 'recite:learning' %}"><button type="button" class="btn btn-primary btn-lg">Learning</button></a>
   </p>
-
+  <div>复习已经学过的单词</div>
   <p>
     <a href="{% url 'recite:reviewing' %}"><button type="button" class="btn btn-primary btn-lg">Reviewing</button></a>
   </p>
 
   <p>
-  <a href="{% url 'recite:learning' %}"><button type="button" class="btn btn-primary btn-lg" disabled>Testing</button></a>
+  <a href="{% url 'recite:learning' %}"><button type="button" class="btn btn-primary btn-lg" disabled>敬请期待</button></a>
   </p>
 
 {% endblock body %}

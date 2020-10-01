@@ -47,7 +47,7 @@
         {% endfor %}
       </div><br>
       {% empty %}
-        <h3>没有新的词语了，请测验。</h3>
+        <h3>没有新的词语了，请继续学习</h3>
       {% endfor %}
         {% csrf_token %}
       <button type="submit" class="btn btn-primary center_">提交</button>
@@ -76,7 +76,7 @@
         {% endfor %}
       </div><br>
       {% empty %}
-        <h3>没有新的词语了，请测验。</h3>
+        <h3>没有新的词语了，请继续学习。</h3>
       {% endfor %}
       <button type="submit" class="btn btn-primary center_">下一组</button>
     </form>
