@@ -18,11 +18,11 @@ class PersonManager(models.Manager):
     def get_incorrect_rate(self,user_id):
         cursor = connection.cursor()
         sql = '''select item_id, round(incorrect_times/reviewed_times*100,1) incorrect_rate from df_learned
-                where user_id = %s
+                where user_id = %s and TIMEDIFF(now(),update_time) > '08:10:00'
                 ORDER BY incorrect_rate DESC
                 limit 20
                 '''
-        print('qqqq',user_id)
+        # print('qqqq',user_id)
         cursor.execute(sql,user_id)
         res = cursor.fetchall()
         return res

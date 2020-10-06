@@ -181,7 +181,7 @@ def review_logic(user_id):
     minCorrect = Learned.objects.filter(user_id=user_id).aggregate(Min('correct_times'))
     # 如果学了，那就先找复习次数最小的,根据复习的过的次数和时间进行筛选
     if minReviewed['reviewed_times__min'] < 3:
-        # print(minReviewed)
+        # print('复习逻辑1',minReviewed)
         if minReviewed['reviewed_times__min'] < 1:
             min_sets = Learned.objects.filter(user_id=user_id).filter(
                 reviewed_times=minReviewed['reviewed_times__min'])
@@ -202,7 +202,7 @@ def review_logic(user_id):
         eng_words = [re.split(r'\s|=', str(i)) for i in min_sets]  # [1,chinese,eng1]
 
     elif minCorrect['correct_times__min'] < 1:
-        # print(minCorrect)
+        # print('复习逻辑2',minCorrect)
         min_sets = Learned.objects.filter(user_id=user_id).filter(correct_times=minCorrect['correct_times__min'])
         min_sets = [i.item_id for i in min_sets]
         min_sets = ItemBank.objects.filter(item_id__in=random_sample(min_sets, 10))
@@ -210,10 +210,26 @@ def review_logic(user_id):
 
     else:
         # print(user_id)
-        learned_list_3 = [i[0] for i in Learned.objects.get_incorrect_rate(user_id)]
-        # print(learned_list_3)
-        sets = ItemBank.objects.filter(item_id__in=learned_list_3)
+        learned_list_3 = [i for i in Learned.objects.get_incorrect_rate(user_id)]
+        learned_list_3_num = [i[0] for i in learned_list_3]
+        # print('复习逻辑３',learned_list_3)
+        sets = ItemBank.objects.filter(item_id__in=learned_list_3_num)
         # print(sets)
-        eng_words = [re.split(r'\s|=', str(i)) for i in sets]  # [1,chinese,eng1]
+        eng_words = [re.split(r'\s|=', str(i)) for i in sets]
+        # print(eng_words)
+        eng_words_unsorted = []
+        for i in learned_list_3:
+            for s in eng_words:
+                # print(type(i),type(s[0]))
+                if i[0] == int(s[0]):
+                    s.append(i[1])
+                    eng_words_unsorted.extend([s])
+                    break
+                else:
+                    pass
+        eng_words = eng_words_unsorted
+        # print(eng_words)
+        # [1,chinese,eng1]
+
 
     return eng_words
