@@ -3,10 +3,10 @@
 <h1>Select what you want.</h1>
 <div class="row">
   {%for image in images%}
-    <a class="col-md-4" href="/{{image.image_name}}_menu" style="ji">
+    <a class="col-md-4" href="/{{image.image_name}}_menu" style="margin-top:15px">
       <div>
         <img class="img-responsive" src="/media/{{image.image_url}}">
-        <h4 class="text-align:center">{{image.image_name}}</h4>
+        <h4 style="text-align:center">{{image.image_name}}</h4>
       </div>
     </a>
   {%endfor%}
