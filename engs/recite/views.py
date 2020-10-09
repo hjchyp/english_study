@@ -200,6 +200,29 @@ def review_logic(user_id):
         min_sets = [i.item_id for i in min_sets]
         min_sets = ItemBank.objects.filter(item_id__in=random_sample(min_sets, 10))
         eng_words = [re.split(r'\s|=', str(i)) for i in min_sets]  # [1,chinese,eng1]
+        if len(eng_words) == 0:
+            # print(user_id)
+            learned_list_3 = [i for i in Learned.objects.get_incorrect_rate(user_id)]
+            learned_list_3_num = [i[0] for i in learned_list_3]
+            # print('复习逻辑１－３',learned_list_3)
+            sets = ItemBank.objects.filter(item_id__in=learned_list_3_num)
+            # print(sets)
+            eng_words = [re.split(r'\s|=', str(i)) for i in sets]
+            # print(eng_words)
+            eng_words_unsorted = []
+            for i in learned_list_3:
+                for s in eng_words:
+                    # print(type(i),type(s[0]))
+                    if i[0] == int(s[0]):
+                        s.append(i[1])
+                        eng_words_unsorted.extend([s])
+                        break
+                    else:
+                        pass
+            eng_words = eng_words_unsorted
+            # print(eng_words)
+            # [1,chinese,eng1]
+
 
     elif minCorrect['correct_times__min'] < 1:
         # print('复习逻辑2',minCorrect)
