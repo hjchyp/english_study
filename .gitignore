@@ -5,3 +5,4 @@ engs/files/
 engs/engs/setting*
 *__pycache__*
 engs/recite/migrations/
+engs/media/
