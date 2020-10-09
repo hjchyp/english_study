@@ -19,9 +19,10 @@ from recite.views import *
 
 urlpatterns = [
     re_path('^login/$', LoginView.as_view(), name='login'),
-    re_path('^$', LoginView.as_view(), name='login'),
+    re_path('^$', Index.as_view(), name='Index'),
     re_path('^logout/$', LogoutView.as_view(), name='logout'),
     re_path('^learning/$', Learning.as_view(), name='learning'),
-    re_path('^menu/$', Menu.as_view(), name='menu'),
+    re_path('^yybycycy_menu/$', yybycycyMenu.as_view(), name='yybycycy_menu'),
     re_path('^reviewing/$', Reviewing.as_view(), name='reviewing'),
+    re_path('^index/$', Index.as_view(), name='index')
 ]

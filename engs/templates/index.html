@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block body %}
+<h1>Select what you want.</h1>
+<div class="row">
+  {%for image in images%}
+    <a class="col-md-4" href="/{{image.image_name}}_menu" style="margin-top:15px">
+      <div>
+        <img class="img-responsive" src="http://127.0.0.1:8888/media/images/yybycycy.jpg">
+        <h4 style="text-align:center">{{image.image_name}}</h4>
+      </div>
+    </a>
+  {%endfor%}
+</div>
+
+{% endblock body %}

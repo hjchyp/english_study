@@ -8,7 +8,7 @@ from utils.mixin import LoginRequiredMixin,trans_excel_to_list
 from django.conf import settings
 import xlrd
 import os
-from recite.models import ItemBank,User,Learned,Test
+from recite.models import ItemBank,User,Learned,Test,BookImage
 import re
 import random
 from django.db.models import Max,Min
@@ -32,7 +32,7 @@ class LoginView(View):
         # 先看看密码对不对
         if user is not None:
             login(request, user)
-            return redirect(reverse('recite:menu'))
+            return redirect(reverse('recite:index'))
         else:
             errmsg = '用户名或密码错误'
             return render(request, 'login.html', context={'errmsg':errmsg})
@@ -63,9 +63,9 @@ class Learning(LoginRequiredMixin,View):
 
         return redirect(reverse('recite:learning'))
 
-class Menu(LoginRequiredMixin,View):
+class yybycycyMenu(LoginRequiredMixin,View):
     def get(self,request):
-        return render(request,'menu.html')
+        return render(request,'yybycycy_menu.html')
 
 class Reviewing(LoginRequiredMixin,View):
     def get(self,request):
@@ -104,12 +104,21 @@ class Reviewing(LoginRequiredMixin,View):
                 test_object.save()
         return render(request, 'words_reviewing.html', {'answer_words':answer_words})
 
+class Index(LoginRequiredMixin,View):
+    def get(self,request):
+        images = BookImage.objects.all()
+        context = {'images':images}
+        return render(request, 'index.html',context=context)
+
+
+
 class LogoutView(LoginRequiredMixin,View):
     def get(self, request):
         '''退出登录'''
         # 清除用户的session信息
         logout(request)
         return redirect(reverse('recite:login'))
+
 
 
 '''
