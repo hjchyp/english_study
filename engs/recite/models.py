@@ -130,3 +130,7 @@ class Test(BaseModel):
         verbose_name = '测试表'
         verbose_name_plural = verbose_name
 
+class BookImage(BaseModel):
+    pic_id = models.AutoField(verbose_name='书目编号',primary_key=True)
+    image_name = models.CharField(max_length=128,verbose_name='书目名称')
+    image_url = models.ImageField(upload_to='images/')

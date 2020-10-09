@@ -4,3 +4,4 @@ engs/uwsgi.ini
 engs/files/
 engs/engs/setting*
 *__pycache__*
+engs/recite/migrations/
